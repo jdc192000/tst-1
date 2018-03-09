@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Firebase test</title>
+
+</head>
+
+<body>
+
+    <p>Firebase test.</p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+
+    <script>
+
+        var config = {
+            apiKey: "AIzaSyCQj4CNSXmx1lRiPXYgj-CrLFom2-kPS3M",
+            authDomain: "test-1-403eb.firebaseapp.com",
+            databaseURL: "https://test-1-403eb.firebaseio.com",
+            projectId: "test-1-403eb",
+            storageBucket: "",
+            messagingSenderId: "707725561728"
+        };
+
+        firebase.initializeApp(config);
+
+        var database = firebase.database();
+        var userKey = 'def';
+        var wishList = ["dog", "cat", "car"];
+        var wishListtest = [];
+        console.log("config init list: " + wishList);
+
+        function retrieveData() {
+
+            console.log(database.ref(userKey).once('value').then(function (snapshot) {
+                // wishListtest = (snapshot.val() && snapshot.val().list.slice());
+                // wishListtest.push() = (snapshot.val().list.slice());
+                wishListtest = (snapshot.val().list);
+                console.log("retrieveData wishListtest1: " + wishListtest);
+            }));
+
+            testOne();
+
+        };
+
+        function testOne() {
+
+            var test = {
+                parent: "xyz",
+                list: wishList
+            };
+
+            console.log("testOne " + test);
+            console.log("testOne wishListtest2: " + wishListtest);
+
+            database.ref().child(userKey).set(test);
+
+        };
+
+        database.ref().on("value", function (snapshot) {
+            console.log("DB snap: " + snapshot.val());
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+        retrieveData();
+
+    </script>
+
+</body>
+
+</html>
